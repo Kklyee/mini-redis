@@ -1,6 +1,9 @@
 package main
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 type TTLEntry struct {
 	Value     string
@@ -26,11 +29,15 @@ func (s *TTLStore) Set(key, value string) {
 	}
 }
 
-func (s *TTLStore) Get(key string)(TTLEntry,bool) {
+func (s *TTLStore) Get(key string)(string,error) {
    val, ok := s.data[key]
 
    if !ok {
-     return TTLEntry{}, ok
+     return "", fmt.Errorf("get %q: %w",key,ErrKeyNotFound)
    }
-   return val,ok
+   if time.Now().After(val.ExpiresAt) {
+     delete(s.data,key)
+     return "", fmt.Errorf("get %q: %w",key,ErrKeyNotFound)
+   }
+   return val.Value,nil
 }
