@@ -21,14 +21,13 @@ func TestSetAndGet(t *testing.T) {
 	}
 }
 
-
 func TestGetMissingKey(t *testing.T) {
 	store := NewStore()
 
 	_, err := store.Get("missing")
 
-	if !errors.Is(err,ErrKeyNotFound)  {
-	  t.Fatalf("expected ErrKeyNotFound, got %v", err)
+	if !errors.Is(err, ErrKeyNotFound) {
+		t.Fatalf("expected ErrKeyNotFound, got %v", err)
 	}
 
 }
@@ -40,7 +39,7 @@ func TestSetOverwrite(t *testing.T) {
 
 	got, err := store.Get("name")
 
-	if errors.Is(err,ErrKeyNotFound) {
+	if errors.Is(err, ErrKeyNotFound) {
 		t.Fatal("expected key to exist")
 	}
 
@@ -51,10 +50,10 @@ func TestSetOverwrite(t *testing.T) {
 
 func TestDelete(t *testing.T) {
 	store := NewStore()
-	store.Set("name","alice")
+	store.Set("name", "alice")
 	store.Delete("name")
 	val, err := store.Get("name")
 	if err == nil {
-	  t.Fatalf("expected key to be deleted, got %q", val)
+		t.Fatalf("expected key to be deleted, got %q", val)
 	}
 }

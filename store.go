@@ -1,6 +1,9 @@
 package main
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 var ErrKeyNotFound = errors.New("Key not found")
 
@@ -16,10 +19,10 @@ func NewStore() *Store {
 
 func (s *Store) Get(key string) (string, error) {
 	val, ok := s.data[key]
-	if ok {
-		return val, nil
+	if !ok {
+		return "", fmt.Errorf("get %q: %w", key, ErrKeyNotFound)
 	}
-	return "", ErrKeyNotFound
+	return val, nil
 }
 
 func (s *Store) Set(key, value string) {
