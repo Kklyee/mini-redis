@@ -29,15 +29,15 @@ func (s *TTLStore) Set(key, value string) {
 	}
 }
 
-func (s *TTLStore) Get(key string)(string,error) {
-   val, ok := s.data[key]
+func (s *TTLStore) Get(key string) (string, error) {
+	val, ok := s.data[key]
 
-   if !ok {
-     return "", fmt.Errorf("get %q: %w",key,ErrKeyNotFound)
-   }
-   if time.Now().After(val.ExpiresAt) {
-     delete(s.data,key)
-     return "", fmt.Errorf("get %q: %w",key,ErrKeyNotFound)
-   }
-   return val.Value,nil
+	if !ok {
+		return "", fmt.Errorf("get %q: %w", key, ErrKeyNotFound)
+	}
+	if time.Now().After(val.ExpiresAt) {
+		delete(s.data, key)
+		return "", fmt.Errorf("get %q: %w", key, ErrKeyNotFound)
+	}
+	return val.Value, nil
 }
